@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-navy-950: #061A2C;
+  --color-navy-900: #0A233A;
+  --color-navy-850: #0D2B47;
+  --color-navy-800: #0F304E;
+  --color-navy-700: #14365A;
+  --color-navy-600: #1C4A73;
+  --color-teal-brand: #3EA8BE;
+  --color-teal-light: #5BBBD1;
+  --color-teal-pale: #E6EFF4;
+  --color-teal-mist: #DCE9F0;
+  --color-slate-body: #52667A;
+  --color-slate-muted: #71869A;
+  --font-serif: "Playfair Display", "Libre Baskerville", Georgia, serif;
+  --font-sans: "Inter", ui-sans-system, system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans); color: #0F304E; background: #fff; -webkit-font-smoothing: antialiased; }
+.font-serif-display { font-family: var(--font-serif); }
+
+/* dotted world map pattern helper */
+.map-dots {
+  background-image: radial-gradient(circle, #B9CFDE 1.2px, transparent 1.3px);
+  background-size: 11px 11px;
+}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #E6EFF4; }
+::-webkit-scrollbar-thumb { background: #0F304E; border-radius: 10px; }
+input, textarea, select { outline: none; }
+input:focus, textarea:focus, select:focus { border-color: #3EA8BE !important; box-shadow: 0 0 0 3px rgba(62,168,190,.15); }

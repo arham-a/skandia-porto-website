@@ -1,0 +1,55 @@
+---
+import PageHero from "../components/PageHero.astro";
+import UrgentBanner from "../components/UrgentBanner.astro";
+import ContactSection from "../components/ContactSection.astro";
+import Icon from "../components/Icon.astro";
+import { whyItems, stats } from "../data/site";
+const whyIcon: Record<string, string> = { ShipWheel: "wheel", Shield: "shield", Layers: "layers", Clock: "clock", Globe: "globe" };
+const checks = ["Independent & unbiased advice","Commercial + technical under one roof","Single point of contact, global reach","Transparent fees, agreed in advance"];
+const steps = [
+  { n: "01", t: "Understand", d: "We start with your commercial objective — not a standard template. Every instruction is scoped against your contract, timeline and risk." },
+  { n: "02", t: "Act", d: "We deploy the right expertise, locally or internationally, and keep you informed with clear, contemporaneous reporting." },
+  { n: "03", t: "Deliver & Learn", d: "You receive evidence-based conclusions and practical next steps. We review every assignment so the next one is even smoother." },
+];
+---
+  <main>
+    <PageHero eyebrow="ABOUT SKANDIA PORTO" title="Independent Maritime Expertise, Rooted in Denmark. Trusted Worldwide." text="Skandia Porto ApS is an independent maritime services company providing commercial, technical and claims support to the global shipping and trade community." image="https://images.pexels.com/photos/22719125/pexels-photo-22719125.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" />
+    <section class="max-w-7xl mx-auto px-6 py-14 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">WHO WE ARE</p>
+        <h2 class="font-serif-display text-3xl md:text-4xl text-[#0F304E] mt-3 leading-tight">Practical solutions, delivered with integrity</h2>
+        <div class="space-y-4 text-[14.5px] leading-relaxed text-[#52667A] mt-5">
+          <p>Like the independent marine, cargo and warranty surveyors and consultants at firms such as Maricrew Marine Services, Skandia Porto was established with a clear purpose: to deliver high-quality, impartial services across chartering, shipbroking, freight forwarding, surveying, claims handling and pre/post-fixture solutions.</p>
+          <p>Our valued clients include shipowners, charterers, operators, cargo underwriters, P&amp;I clubs, maritime administrations, port and terminal facilities, traders and logistics clients — both direct and indirect participants in the marine industry.</p>
+          <p>Based in Denmark, at the heart of Northern Europe's maritime cluster, our service network covers all major ports worldwide through trusted local partners we know personally.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 mt-7">
+          {checks.map(t => <p class="flex gap-2 text-[13px] font-medium text-[#334E66]"><span class="text-[#3EA8BE] shrink-0"><Icon name="checkCircle" size={17} /></span>{t}</p>)}
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <img src="https://images.pexels.com/photos/20581299/pexels-photo-20581299.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="w-full h-64 object-cover col-span-2" loading="lazy" />
+        <img src="https://images.pexels.com/photos/13757273/pexels-photo-13757273.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="w-full h-44 object-cover" loading="lazy" />
+        <img src="https://images.pexels.com/photos/6595780/pexels-photo-6595780.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="w-full h-44 object-cover" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="bg-[#0F304E]"><div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 lg:grid-cols-4 gap-8">{stats.map(s => <div class="text-center"><p class="font-serif-display text-4xl text-white">{s.value}</p><p class="text-xs text-[#9FC6D6] mt-1">{s.label}</p></div>)}</div></section>
+
+    <section class="max-w-7xl mx-auto px-6 py-14">
+      <p class="text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">OUR APPROACH</p>
+      <h2 class="font-serif-display text-3xl text-[#0F304E] mt-2">How we work</h2>
+      <div class="grid md:grid-cols-3 gap-6 mt-8">
+        {steps.map(x => <div class="border border-[#E6EFF4] p-7 hover:shadow-lg transition"><p class="font-serif-display text-4xl text-[#BFE0EA]">{x.n}</p><h3 class="font-bold text-[#0F304E] mt-3">{x.t}</h3><p class="text-sm text-[#667D92] leading-relaxed mt-2">{x.d}</p></div>)}
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-8 mt-14">
+        {whyItems.map(w => <div><span class="text-[#0F304E] inline-block"><Icon name={whyIcon[w.icon]} size={28} strokeWidth={1.4} /></span><h3 class="text-sm font-bold text-[#0F304E] mt-3">{w.title}</h3><p class="text-xs text-[#667D92] leading-relaxed mt-1.5">{w.text}</p><span class="block w-8 h-[2px] bg-[#7FC7D8] mt-3"></span></div>)}
+      </div>
+      <div class="mt-12 bg-[#E6EFF4] p-8 md:p-10 flex flex-col md:flex-row justify-between gap-6 items-start md:items-center">
+        <div><h3 class="font-serif-display text-2xl text-[#0F304E]">Your satisfaction is our reward.</h3><p class="text-sm text-[#52667A] mt-2 max-w-lg">That principle guides every fixture, survey and claim we handle — wherever in the world it takes us.</p></div>
+        <a href="/contact" class="inline-flex items-center gap-2 bg-[#0F304E] text-white text-sm font-semibold px-6 py-3.5 shrink-0">Work With Us <Icon name="arrowRight" size={15} /></a>
+      </div>
+    </section>
+    <UrgentBanner /><ContactSection compact />
+  </main>
+

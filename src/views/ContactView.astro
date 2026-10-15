@@ -1,0 +1,35 @@
+---
+import PageHero from "../components/PageHero.astro";
+import ContactSection from "../components/ContactSection.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/site";
+import { services } from "../data/services";
+const cards = [
+  { icon: "pin", t: "Office", lines: ["Skandia Porto ApS", "Esplanaden 34, 1263", "Copenhagen K, Denmark"] },
+  { icon: "mail", t: "Email", lines: [site.email, "Response within one business day"] },
+  { icon: "phone", t: "Phone — 24/7 for urgent matters", lines: [site.phone, `Urgent: ${site.urgentPhone}`] },
+];
+---
+  <main>
+    <PageHero eyebrow="CONTACT" title="Let's Discuss Your Requirements" text="Whether you need commercial support, technical expertise or assistance with a claim, our team in Copenhagen — and our network worldwide — is ready to assist." image="https://images.pexels.com/photos/33587048/pexels-photo-33587048.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" />
+    <div id="urgent-banner" class="hidden bg-[#B42318] text-white"><div class="max-w-7xl mx-auto px-6 py-4 text-sm font-semibold text-center">⚠ Urgent attendance selected — for immediate response call {site.urgentPhone} (24/7). You can also send the form below and mark your message urgent.</div></div>
+    <section class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-5">
+      {cards.map(c => (
+        <div class="border border-[#E6EFF4] p-7 bg-[#F7FAFC]">
+          <span class="text-[#3EA8BE] inline-block"><Icon name={c.icon} size={24} /></span>
+          <h3 class="font-bold text-[#0F304E] mt-3 text-sm">{c.t}</h3>
+          <p class="text-sm text-[#52667A] leading-relaxed mt-2">{c.lines.map((l, i) => <>{i > 0 && <br/>}{l}</>)}</p>
+        </div>
+      ))}
+    </section>
+    <div class="max-w-7xl mx-auto px-6 pb-4 flex flex-wrap gap-2 items-center">
+      <span class="text-[11px] font-bold tracking-widest text-[#71869A] mr-1 flex items-center gap-1.5"><Icon name="clock" size={13} /> POPULAR ENQUIRIES:</span>
+      {services.map(s => <a href={`/services/${s.slug}`} class="text-xs font-semibold border border-[#D7E3EC] px-3 py-1.5 text-[#40596F] hover:border-[#3EA8BE] hover:text-[#0F304E]">{s.title}</a>)}
+    </div>
+    <ContactSection />
+    <section class="h-[320px] relative bg-[#DCE9F0]">
+      <iframe title="Copenhagen map" src="https://www.openstreetmap.org/export/embed.html?bbox=12.55%2C55.66%2C12.65%2C55.71&layer=mapnik" class="w-full h-full border-0 grayscale-[35%]" loading="lazy"></iframe>
+      <div class="absolute left-6 bottom-6 bg-[#0A233A] text-white px-5 py-4 pointer-events-none"><p class="font-serif-display">Copenhagen, Denmark</p><p class="text-xs text-[#9FC6D6] mt-0.5">Home port — serving the world</p></div>
+    </section>
+  </main>
+

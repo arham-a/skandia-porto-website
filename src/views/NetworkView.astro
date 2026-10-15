@@ -1,0 +1,73 @@
+---
+import PageHero from "../components/PageHero.astro";
+import UrgentBanner from "../components/UrgentBanner.astro";
+import ContactSection from "../components/ContactSection.astro";
+import WorldMap from "../components/WorldMap.astro";
+import Icon from "../components/Icon.astro";
+import { regions, networkPoints } from "../data/network";
+---
+  <main>
+    <PageHero eyebrow="OUR NETWORK" title="A Global Network of Trusted Partners" text="Well-established partners, surveyors and maritime professionals across key regions — so we can support you wherever your operations lead." image="https://images.pexels.com/photos/33284879/pexels-photo-33284879.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" />
+    <section class="max-w-7xl mx-auto px-6 py-12">
+      <div class="grid lg:grid-cols-[1fr_300px] gap-8 items-start">
+        <div class="border border-[#E6EFF4] bg-[#F7FAFC] p-4 relative">
+          <div class="relative">
+            <WorldMap height="380px" />
+            {regions.map((r, i) => <button data-region={i} aria-label={r.name} class={`region-pin absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 border-white shadow transition ${i === 0 ? "bg-[#3EA8BE] scale-125" : "bg-[#0F304E] hover:scale-110"}`} style={`left:${r.x};top:${r.y}`}></button>)}
+          </div>
+          <div class="bg-white border border-[#E6EFF4] p-5 mt-2 flex flex-col sm:flex-row gap-4 justify-between">
+            <div>
+              <p class="flex items-center gap-2 font-serif-display text-xl text-[#0F304E]"><span class="text-[#3EA8BE]"><Icon name="pin" size={18} /></span><span id="region-name">{regions[0].name}</span></p>
+              <p class="text-xs font-bold tracking-wide text-[#3EA8BE] mt-1.5" id="region-ports">{regions[0].ports}</p>
+              <p class="text-sm text-[#667D92] mt-1.5" id="region-focus">{regions[0].focus}</p>
+            </div>
+            <a href="/contact" class="shrink-0 self-start inline-flex items-center gap-2 bg-[#0F304E] text-white text-xs font-bold px-4 py-2.5">Request Attendance <Icon name="arrowRight" size={13} /></a>
+          </div>
+        </div>
+        <div class="space-y-3">
+          {regions.map((r, i) => (
+            <button data-region={i} class={`region-btn w-full text-left border p-4 transition ${i === 0 ? "border-[#3EA8BE] bg-[#E6EFF4]" : "border-[#E6EFF4] bg-white hover:border-[#BFE0EA]"}`}>
+              <span class="block text-sm font-bold text-[#0F304E]">{r.name}</span><span class="block text-[11.5px] text-[#71869A] mt-1">{r.ports}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
+        {networkPoints.map((n, i) => <div class="border-t-4 border-[#3EA8BE] bg-[#F7FAFC] p-6"><p class="font-serif-display text-3xl text-[#BFE0EA]">0{i + 1}</p><h3 class="font-bold text-[#0F304E] text-[15px] mt-2">{n.title}</h3><p class="text-[13px] text-[#667D92] leading-relaxed mt-2">{n.text}</p></div>)}
+      </div>
+
+      <div class="mt-12 grid lg:grid-cols-2 gap-0">
+        <img src="https://images.pexels.com/photos/24702866/pexels-photo-24702866.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="w-full h-full min-h-[280px] object-cover" loading="lazy" />
+        <div class="bg-[#0F304E] p-8 md:p-12">
+          <p class="text-[11px] font-bold tracking-[0.22em] uppercase text-[#8ED3E4]">HOW IT WORKS</p>
+          <h2 class="font-serif-display text-3xl text-white mt-3">One instruction. Worldwide attendance.</h2>
+          <div class="space-y-5 mt-7">
+            {[["1","Instruct us","One email or call — vessel, port, scope and timeline."],["2","We deploy locally","Our vetted partner attends, following our reporting standards."],["3","You stay informed","Live updates during attendance and a full report within 48 hours."]].map(([n, t, d]) => (
+              <div class="flex gap-4"><span class="w-9 h-9 rounded-full bg-[#3EA8BE] text-white font-serif-display flex items-center justify-center shrink-0">{n}</span><span><span class="block text-white font-bold text-sm">{t}</span><span class="block text-[#B9CFDE] text-[13px] mt-0.5">{d}</span></span></div>
+            ))}
+          </div>
+          <a href="/contact" class="inline-flex items-center gap-2 border border-white text-white text-[13px] font-semibold px-6 py-3.5 mt-8 hover:bg-white hover:text-[#0F304E] transition">Put Our Network to Work <Icon name="arrowRight" size={14} /></a>
+        </div>
+      </div>
+    </section>
+    <UrgentBanner /><ContactSection compact />
+  </main>
+  <script define:vars={{ regions }}>
+    const nameEl = document.getElementById("region-name");
+    const portsEl = document.getElementById("region-ports");
+    const focusEl = document.getElementById("region-focus");
+    const btns = document.querySelectorAll(".region-btn");
+    const pins = document.querySelectorAll(".region-pin");
+    function select(i) {
+      const r = regions[i];
+      if (nameEl) nameEl.textContent = r.name;
+      if (portsEl) portsEl.textContent = r.ports;
+      if (focusEl) focusEl.textContent = r.focus;
+      btns.forEach((b, j) => { b.className = `region-btn w-full text-left border p-4 transition ${j === i ? "border-[#3EA8BE] bg-[#E6EFF4]" : "border-[#E6EFF4] bg-white hover:border-[#BFE0EA]"}`; });
+      pins.forEach((p, j) => { p.className = `region-pin absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 border-white shadow transition ${j === i ? "bg-[#3EA8BE] scale-125" : "bg-[#0F304E] hover:scale-110"}`; });
+    }
+    btns.forEach((b, i) => b.addEventListener("click", () => select(i)));
+    pins.forEach((p, i) => p.addEventListener("click", () => select(i)));
+  </script>
+

@@ -1,0 +1,33 @@
+---
+interface Props { height?: string }
+const { height = "340px" } = Astro.props;
+const pins = [[150,130],[430,95],[500,140],[640,200],[430,220],[680,110],[700,270],[250,270]];
+---
+<div class="relative w-full" style={`height:${height}`} role="img" aria-label="World map showing Skandia Porto partner coverage">
+  <svg viewBox="0 0 800 360" class="w-full h-full" fill="#C2D6E3" aria-hidden="true">
+    <g opacity="0.9">
+      <path d="M95 105 l55-38 72 8 38 28-22 32-48 42-30 58-28-8-12-52-32-28z"/>
+      <path d="M205 235 l32-18 30 28-8 72-22 38-18-52-20-38z"/>
+      <path d="M365 78 l62-28 88 12 22 30-38 18-52-8-28 28-42-8z"/>
+      <path d="M385 155 l48-12 38 32-10 78-28 52-24-38-18-72z"/>
+      <path d="M520 70 l88-22 108 28 42 38-48 28-98 12-62-18-42-32z"/>
+      <path d="M585 185 l52-8 28 28-48 42-28-22z"/>
+      <path d="M655 255 l48-12 32 18-18 32-42-8z"/>
+    </g>
+    <g stroke="#7FB3C8" stroke-width="1.2" fill="none" stroke-dasharray="4 5" opacity="0.9">
+      <path d="M150 130 Q300 60 430 95 T680 110"/>
+      <path d="M430 95 Q470 160 430 220"/>
+      <path d="M430 95 Q540 140 640 200"/>
+      <path d="M260 160 Q380 200 430 220"/>
+      <path d="M150 130 Q260 220 430 220"/>
+    </g>
+    <g fill="#0F304E">
+      {pins.map(([cx, cy], i) => (
+        <g>
+          <circle cx={cx} cy={cy} r="9" fill="#3EA8BE" opacity="0.25"><animate attributeName="r" values="6;13;6" dur="2.6s" repeatCount="indefinite" begin={`${i * 0.3}s`} /></circle>
+          <circle cx={cx} cy={cy} r="4" />
+        </g>
+      ))}
+    </g>
+  </svg>
+</div>

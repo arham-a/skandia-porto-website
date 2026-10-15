@@ -1,0 +1,35 @@
+---
+import UrgentBanner from "../components/UrgentBanner.astro";
+import ContactSection from "../components/ContactSection.astro";
+import Icon from "../components/Icon.astro";
+import { insights, type Insight } from "../data/insights";
+
+interface Props { article: Insight }
+const { article: a } = Astro.props;
+const related = insights.filter(i => i.slug !== a.slug).slice(0, 3);
+---
+  <main>
+    <section class="bg-[#EAF2F7]"><div class="max-w-4xl mx-auto px-6 pt-12 pb-10">
+      <p class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold tracking-widest text-[#5A7A93] uppercase"><a href="/">Home</a><span>›</span><a href="/insights">Insights</a><span>›</span><span class="text-[#3EA8BE]">{a.category}</span></p>
+      <h1 class="font-serif-display text-3xl md:text-[44px] leading-[1.15] text-[#0F304E] mt-4">{a.title}</h1>
+      <p class="flex flex-wrap gap-4 text-xs text-[#71869A] mt-4"><span>{a.date}</span><span class="flex items-center gap-1"><Icon name="clock" size={13} />{a.readTime}</span><span>By Skandia Porto Team</span></p>
+    </div></section>
+    <div class="max-w-5xl mx-auto px-6"><img src={a.image} alt="" class="w-full aspect-[21/9] object-cover" /></div>
+    <article class="max-w-3xl mx-auto px-6 py-12">
+      <p class="font-serif-display text-xl leading-relaxed text-[#334E66]">{a.excerpt}</p>
+      {a.body.map(p => <p class="text-[15px] leading-[1.85] text-[#40596F] mt-6">{p}</p>)}
+      <div class="bg-[#E6EFF4] border-l-4 border-[#3EA8BE] p-6 mt-10">
+        <p class="font-serif-display text-lg text-[#0F304E]">Facing this situation now?</p>
+        <p class="text-sm text-[#52667A] mt-1.5">Our team handles matters like this every week, worldwide.</p>
+        <a href="/contact" class="inline-flex items-center gap-2 bg-[#0F304E] text-white text-[13px] font-semibold px-5 py-3 mt-4">Talk to Our Team <Icon name="arrowRight" size={14} /></a>
+      </div>
+    </article>
+    <section class="bg-[#F4F8FA]"><div class="max-w-7xl mx-auto px-6 py-12">
+      <h2 class="font-serif-display text-2xl text-[#0F304E]">Related Insights</h2>
+      <div class="grid md:grid-cols-3 gap-5 mt-6">
+        {related.map(r => <a href={`/insights/${r.slug}`} class="group bg-white border border-[#E6EFF4]"><img src={r.image} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" /><span class="block p-5"><span class="text-[10px] font-bold tracking-widest text-[#3EA8BE] uppercase">{r.category} · {r.date}</span><span class="block font-serif-display font-semibold text-[#0F304E] mt-2 leading-snug">{r.title}</span></span></a>)}
+      </div>
+    </div></section>
+    <UrgentBanner /><ContactSection compact />
+  </main>
+

@@ -1,0 +1,18 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../data/site";
+---
+<section class="relative overflow-hidden bg-[#0A233A]">
+  <div class="absolute inset-0">
+    <img src="https://images.pexels.com/photos/39725242/pexels-photo-39725242.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="w-full h-full object-cover object-center opacity-55" loading="lazy" />
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0A233A] via-[#0A233A]/90 to-[#0A233A]/20"></div>
+  </div>
+  <div class="relative max-w-7xl mx-auto px-6 py-10 md:py-12 flex flex-col md:flex-row md:items-center gap-6 justify-between">
+    <div class="max-w-xl">
+      <h2 class="font-serif-display text-[26px] md:text-[32px] text-white leading-tight">24/7 Urgent Marine Attendance</h2>
+      <p class="text-[13.5px] text-[#C7DCE8] mt-2 leading-relaxed">When time is critical, our network is ready to respond.<br class="hidden md:block" /> We provide prompt support for incidents, surveys and claims worldwide.</p>
+      <p class="text-white font-bold text-sm mt-3 md:hidden">{site.urgentPhone}</p>
+    </div>
+    <a href="/contact?type=urgent" class="shrink-0 inline-flex items-center gap-2 border border-white/80 text-white text-[13px] font-semibold px-6 py-3.5 hover:bg-white hover:text-[#0A233A] transition">Request Urgent Assistance <Icon name="arrowRight" size={15} /></a>
+  </div>
+</section>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeView from "../views/HomeView.astro";
+import AboutView from "../views/AboutView.astro";
+import ServicesView from "../views/ServicesView.astro";
+import ServiceDetailView from "../views/ServiceDetailView.astro";
+import InsightsView from "../views/InsightsView.astro";
+import InsightDetailView from "../views/InsightDetailView.astro";
+import NetworkView from "../views/NetworkView.astro";
+import ClaimsView from "../views/ClaimsView.astro";
+import ContactView from "../views/ContactView.astro";
+import LegalView from "../views/LegalView.astro";
+import { services } from "../data/services";
+import { insights } from "../data/insights";
+
+const T = "— SKANDIA PORTO ApS";
+---
+<BaseLayout>
+  <!-- Single-entry Astro app (Version 1 design only): all views are rendered here
+       and shown/hidden by the hash router below. This guarantees navigation works
+       on hosts that serve only dist/index.html (no 404s for /about, /services/...). -->
+  <div class="route-view" data-route="home" data-title={`SKANDIA PORTO ApS — Maritime Solutions Worldwide`}><HomeView /></div>
+  <div class="route-view hidden" data-route="about" data-title={`About ${T}`}><AboutView /></div>
+  <div class="route-view hidden" data-route="services" data-title={`Our Services ${T}`}><ServicesView /></div>
+  {services.map(s => (
+    <div class="route-view hidden" data-route="service-detail" data-slug={s.slug} data-title={`${s.title} ${T}`}><ServiceDetailView service={s} /></div>
+  ))}
+  <div class="route-view hidden" data-route="network" data-title={`Our Network ${T}`}><NetworkView /></div>
+  <div class="route-view hidden" data-route="claims-surveys" data-title={`Claims & Surveys ${T}`}><ClaimsView /></div>
+  <div class="route-view hidden" data-route="insights" data-title={`Insights ${T}`}><InsightsView /></div>
+  {insights.map(a => (
+    <div class="route-view hidden" data-route="insight-detail" data-slug={a.slug} data-title={`${a.title} ${T}`}><InsightDetailView article={a} /></div>
+  ))}
+  <div class="route-view hidden" data-route="contact" data-title={`Contact ${T}`}><ContactView /></div>
+  <div class="route-view hidden" data-route="privacy" data-title={`Privacy Policy ${T}`}><LegalView type="privacy" /></div>
+  <div class="route-view hidden" data-route="terms" data-title={`Terms of Use ${T}`}><LegalView type="terms" /></div>
+  <div class="route-view hidden" data-route="notfound" data-title={`Page Not Found ${T}`}>
+    <main class="max-w-3xl mx-auto px-6 py-24 text-center">
+      <p class="font-serif-display text-[80px] leading-none text-[#D8EDF3]">404</p>
+      <h1 class="font-serif-display text-3xl text-[#0F304E] mt-2">This page has drifted off course.</h1>
+      <p class="text-[#667D92] mt-3">The page you're looking for doesn't exist or has been moved.</p>
+      <a href="/" class="inline-block bg-[#0F304E] text-white text-sm font-semibold px-7 py-3.5 mt-7">Return Home →</a>
+    </main>
+  </div>
+
+  <script>
+    const views = Array.from(document.querySelectorAll<HTMLElement>(".route-view"));
+
+    function parseHash() {
+      const raw = window.location.hash.replace(/^#\/?/, ""); // "services/x?category=Y"
+      const [pathPart, queryPart] = raw.split("?");
+      const path = "/" + pathPart.replace(/\/$/, "");
+      return { path: path === "/" ? "/" : path, query: new URLSearchParams(queryPart || "") };
+    }
+
+    function resolve(path: string) {
+      const seg = path.split("/").filter(Boolean);
+      if (path === "/") return { name: "home" };
+      if (seg.length === 1) {
+        const known = ["about", "services", "network", "claims-surveys", "insights", "contact", "privacy", "terms"];
+        return known.includes(seg[0]) ? { name: seg[0] } : { name: "notfound" };
+      }
+      if (seg.length === 2 && seg[0] === "services") return { name: "service-detail", slug: seg[1] };
+      if (seg.length === 2 && seg[0] === "insights") return { name: "insight-detail", slug: seg[1] };
+      return { name: "notfound" };
+    }
+
+    function render() {
+      const hash = window.location.hash;
+      if (hash && !hash.startsWith("#/") && hash !== "#") return; // in-page anchor, ignore
+      const { path, query } = parseHash();
+      const route = resolve(path === "//" ? "/" : path);
+      let shown = null;
+      views.forEach(v => {
+        const match = v.dataset.route === route.name && (!route.slug || v.dataset.slug === route.slug);
+        v.classList.toggle("hidden", !match);
+        if (match) shown = v;
+      });
+      if (!shown) {
+        views.forEach(v => v.classList.toggle("hidden", v.dataset.route !== "notfound"));
+        shown = views.find(v => v.dataset.route === "notfound");
+      }
+      if (shown?.dataset.title) document.title = shown.dataset.title;
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+
+      // 24/7 urgent banner on contact
+      const ub = document.getElementById("urgent-banner");
+      if (ub) ub.classList.toggle("hidden", !(path === "/contact" && query.get("type") === "urgent"));
+
+      // active nav state
+      document.querySelectorAll("header nav a[href^='/']").forEach(a => {
+        const href = a.getAttribute("href") || "/";
+        const active = href === path || (href !== "/" && path.startsWith(href + "/"));
+        a.classList.toggle("nav-active", active);
+      });
+
+      // close mobile menu / search on navigation
+      document.getElementById("mobile-menu")?.classList.add("hidden");
+      document.getElementById("search-panel")?.classList.add("hidden");
+      document.getElementById("menu-icon-open")?.classList.remove("hidden");
+      document.getElementById("menu-icon-close")?.classList.add("hidden");
+    }
+
+    // Convert every internal absolute link ( /about, /services/... )
+    // into a hash route so it never triggers a server request -> no 404s.
+    document.addEventListener("click", (e) => {
+      const a = (e.target as HTMLElement).closest('a[href^="/"]') as HTMLAnchorElement | null;
+      if (!a) return;
+      const href = a.getAttribute("href") || "/";
+      if (href.startsWith("//")) return; // protocol-relative external
+      e.preventDefault();
+      const target = "#" + href;
+      if (window.location.hash === target) { render(); window.scrollTo({ top: 0 }); }
+      else window.location.hash = target;
+    });
+
+    window.addEventListener("hashchange", render);
+    render();
+  </script>
+</BaseLayout>
+
+<style>
+  header nav a.nav-active { color: #3EA8BE !important; }
+</style>

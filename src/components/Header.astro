@@ -1,0 +1,129 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { navLinks, site } from "../data/site";
+import { services } from "../data/services";
+
+interface Props { currentPath?: string }
+const { currentPath = "/" } = Astro.props;
+const isActive = (p: string) => p === "/" ? currentPath === "/" : currentPath.startsWith(p);
+const searchIndex = [
+  ...services.map(s => ({ label: s.title, path: `/services/${s.slug}`, type: "Service" })),
+  ...insightsSafe(),
+  ...navLinks.map(n => ({ label: n.label, path: n.path, type: "Page" })),
+];
+function insightsSafe() {
+  return [
+    { label: "Insights & Articles", path: "/insights", type: "Page" },
+    { label: "Demurrage, Delays and Documentation", path: "/insights/demurrage-delays-documentation", type: "Insight" },
+    { label: "Chartering in a Tight Market", path: "/insights/chartering-tight-market-2025", type: "Insight" },
+    { label: "General Average Explained", path: "/insights/general-average-explained", type: "Insight" },
+  ];
+}
+---
+<header class="sticky top-0 z-50 bg-white border-b border-[#E6EFF4] shadow-[0_1px_12px_rgba(10,35,58,0.06)]">
+  <div class="bg-[#0A233A] text-white hidden md:block">
+    <div class="max-w-7xl mx-auto px-6 h-8 flex items-center justify-between text-[11px] tracking-wide">
+      <span class="text-[#C7DCE8]">24/7 Urgent Marine Attendance — <span class="text-white font-semibold">{site.urgentPhone}</span></span>
+      <span class="hidden lg:inline text-[#C7DCE8]">{site.email} · Copenhagen · Serving ports worldwide</span>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-[72px]">
+      <Logo />
+      <nav class="hidden lg:flex items-center gap-8" aria-label="Main">
+        {navLinks.map(l => l.hasDropdown ? (
+          <div class="relative group">
+            <a href={l.path} class={`flex items-center gap-1 text-[13.5px] font-medium py-2 ${isActive(l.path) ? "text-[#0F304E] border-b-2 border-[#0F304E]" : "text-[#334E66] hover:text-[#0F304E]"}`}>{l.label} <Icon name="chevron" size={14} class="transition group-hover:rotate-180" /></a>
+            <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-[560px] opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200">
+              <div class="bg-white shadow-[0_18px_50px_rgba(6,26,44,0.18)] border border-[#E6EFF4] p-3 grid grid-cols-2 gap-1">
+                {services.map(s => (
+                  <a href={`/services/${s.slug}`} class="flex gap-3 p-3 hover:bg-[#E6EFF4]">
+                    <img src={s.image} alt="" class="w-14 h-12 object-cover shrink-0" loading="lazy" />
+                    <span><span class="block text-[13px] font-semibold text-[#0F304E] leading-tight">{s.title}</span><span class="block text-[11px] text-[#71869A] mt-1 leading-snug line-clamp-2">{s.excerpt}</span></span>
+                  </a>
+                ))}
+                <a href="/services" class="col-span-2 flex items-center justify-between px-3 py-2.5 bg-[#0F304E] text-white text-[12.5px] font-semibold">View all services <Icon name="arrowRight" size={15} /></a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a href={l.path} class={`text-[13.5px] font-medium py-2 ${isActive(l.path) ? "text-[#0F304E] border-b-2 border-[#0F304E]" : "text-[#334E66] hover:text-[#0F304E]"}`}>{l.label}</a>
+        ))}
+      </nav>
+      <div class="flex items-center gap-2">
+        <button id="search-toggle" aria-label="Search" class="w-10 h-10 flex items-center justify-center text-[#0F304E] hover:bg-[#E6EFF4] rounded-full"><Icon name="search" size={19} /></button>
+        <a href="/contact" class="hidden xl:inline-flex items-center gap-2 bg-[#0F304E] text-white text-[12.5px] font-semibold px-4 py-2.5 hover:bg-[#0A233A]"><Icon name="phone" size={14} /> Discuss a Requirement</a>
+        <button id="menu-toggle" class="lg:hidden w-10 h-10 flex items-center justify-center text-[#0F304E]" aria-label="Menu" aria-expanded="false"><span id="menu-icon-open"><Icon name="menu" size={24} /></span><span id="menu-icon-close" class="hidden"><Icon name="x" size={24} /></span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="search-panel" class="hidden border-t border-[#E6EFF4] bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex items-center gap-3 border border-[#DCE9F0] px-4 py-3 max-w-2xl">
+        <span class="text-[#3EA8BE]"><Icon name="search" size={18} /></span>
+        <input id="search-input" placeholder="Search services, claims, surveying, chartering..." class="flex-1 text-sm border-none bg-transparent" style="box-shadow:none" />
+      </div>
+      <div id="search-results" class="max-w-2xl mt-2 divide-y divide-[#EEF3F6] border border-[#E6EFF4] hidden"></div>
+      <p id="search-empty" class="hidden text-sm text-[#71869A] mt-3">No results. Try “claims”, “chartering” or “survey”.</p>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-[#E6EFF4] bg-white max-h-[calc(100vh-72px)] overflow-y-auto">
+    <nav class="px-5 py-4 flex flex-col" aria-label="Mobile">
+      {navLinks.map(l => l.hasDropdown ? (
+        <div class="border-b border-[#EEF3F6]">
+          <button
+            id="mobile-services-toggle"
+            type="button"
+            class={`w-full py-3 flex items-center justify-between text-left text-[15px] font-medium ${isActive(l.path) ? "text-[#3EA8BE]" : "text-[#0F304E]"}`}
+            aria-expanded="false"
+            aria-controls="mobile-services-list"
+          >
+            <span>{l.label}</span>
+            <span id="mobile-services-chevron" class="transition-transform duration-200"><Icon name="chevron" size={17} /></span>
+          </button>
+          <div id="mobile-services-list" class="hidden pb-3 pl-3">
+            <a href="/services" class="block py-2 text-sm font-semibold text-[#0F304E]">View all services</a>
+            {services.map(s => (
+              <a href={`/services/${s.slug}`} class="block py-2 text-sm text-[#52667A] hover:text-[#3EA8BE]">{s.title}</a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <a href={l.path} class={`py-3 border-b border-[#EEF3F6] text-[15px] font-medium ${isActive(l.path) ? "text-[#3EA8BE]" : "text-[#0F304E]"}`}>{l.label}</a>
+      ))}
+      <a href="/contact" class="mt-4 bg-[#0F304E] text-white text-center py-3.5 font-semibold text-sm">Discuss a Requirement →</a>
+      <p class="text-center text-xs text-[#71869A] mt-4">24/7 Urgent: {site.urgentPhone} · {site.email}</p>
+    </nav>
+  </div>
+</header>
+
+<script define:vars={{ searchIndex }}>
+  const $ = (s, r = document) => r.querySelector(s);
+  const menuBtn = $("#menu-toggle"), mobile = $("#mobile-menu");
+  menuBtn?.addEventListener("click", () => {
+    const open = mobile.classList.toggle("hidden") === false;
+    $("#menu-icon-open").classList.toggle("hidden", open);
+    $("#menu-icon-close").classList.toggle("hidden", !open);
+    menuBtn.setAttribute("aria-expanded", String(open));
+  });
+  const servicesBtn = $("#mobile-services-toggle"), servicesList = $("#mobile-services-list"), servicesChevron = $("#mobile-services-chevron");
+  servicesBtn?.addEventListener("click", () => {
+    const open = servicesList.classList.toggle("hidden") === false;
+    servicesChevron?.classList.toggle("rotate-180", open);
+    servicesBtn.setAttribute("aria-expanded", String(open));
+  });
+  const panel = $("#search-panel"), input = $("#search-input"), results = $("#search-results"), empty = $("#search-empty");
+  $("#search-toggle")?.addEventListener("click", () => { panel.classList.toggle("hidden"); if (!panel.classList.contains("hidden")) input.focus(); });
+  input?.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { results.classList.add("hidden"); empty.classList.add("hidden"); return; }
+    const hits = searchIndex.filter(i => i.label.toLowerCase().includes(q)).slice(0, 6);
+    results.innerHTML = hits.map(h => `<a href="${h.path}" class="flex justify-between px-4 py-3 hover:bg-[#E6EFF4] text-sm"><span class="font-medium text-[#0F304E]">${h.label}</span><span class="text-[11px] uppercase tracking-wider text-[#3EA8BE] font-bold">${h.type}</span></a>`).join("");
+    results.classList.toggle("hidden", hits.length === 0);
+    empty.classList.toggle("hidden", hits.length !== 0);
+  });
+</script>

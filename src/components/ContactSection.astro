@@ -1,0 +1,72 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../data/site";
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+const enquiryOptions = ["Your Enquiry *","Chartering & Shipbroking","Freight Forwarding & Logistics","Marine & Cargo Surveying","Claims & Loss Adjusting","Maritime Consultancy","Ship & Cargo Solutions","Urgent Marine Attendance","General Enquiry"];
+---
+<section class="bg-white" id="contact-form">
+  <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 grid lg:grid-cols-[1fr_1.35fr] gap-10">
+    <div>
+      <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">GET IN TOUCH</p>
+      <h2 class="font-serif-display text-[32px] md:text-[40px] leading-[1.1] text-[#0F304E] mt-3">Let's Discuss<br/>Your Requirements</h2>
+      <p class="text-[14px] text-[#52667A] leading-relaxed mt-4 max-w-sm">Whether you need commercial support, technical expertise or assistance with a claim, our team is ready to assist.</p>
+      {!compact && (
+        <div class="mt-7 space-y-3 text-sm text-[#334E66]">
+          <p><span class="font-bold text-[#0F304E]">Email:</span> {site.email}</p>
+          <p><span class="font-bold text-[#0F304E]">Phone:</span> {site.phone}</p>
+          <p><span class="font-bold text-[#0F304E]">Urgent 24/7:</span> {site.urgentPhone}</p>
+          <p class="text-[#71869A]">Esplanaden 34, 1263 Copenhagen K, Denmark</p>
+        </div>
+      )}
+    </div>
+
+    <div class="self-start w-full">
+      <form class="enquiry-form grid sm:grid-cols-2 gap-4" novalidate>
+        <div><input name="name" placeholder="Name *" class="w-full border border-[#D7E3EC] px-4 py-3 text-sm placeholder:text-[#8AA0B3] bg-white" /><p class="err hidden text-red-600 text-xs mt-1">Name is required</p></div>
+        <div><input name="email" placeholder="Email *" class="w-full border border-[#D7E3EC] px-4 py-3 text-sm placeholder:text-[#8AA0B3] bg-white" /><p class="err hidden text-red-600 text-xs mt-1">Valid email is required</p></div>
+        <input name="company" placeholder="Company" class="w-full border border-[#D7E3EC] px-4 py-3 text-sm placeholder:text-[#8AA0B3] bg-white" />
+        <select name="enquiry" class="w-full border border-[#D7E3EC] px-4 py-3 text-sm text-[#334E66] bg-white">{enquiryOptions.map(o => <option>{o}</option>)}</select>
+        <div class="sm:col-span-2"><textarea name="message" placeholder="How can we help you?" rows="4" class="w-full border border-[#D7E3EC] px-4 py-3 text-sm placeholder:text-[#8AA0B3] bg-white resize-none"></textarea><p class="err hidden text-red-600 text-xs mt-1">Please tell us how we can help</p></div>
+        <div class="sm:col-span-2"><button class="inline-flex items-center gap-2 bg-[#0F304E] text-white text-[13px] font-semibold px-7 py-3.5 hover:bg-[#0A233A] transition">Send Enquiry <Icon name="arrowRight" size={15} /></button></div>
+      </form>
+      <div class="form-success hidden text-center py-8">
+        <span class="inline-block text-[#3EA8BE]"><Icon name="checkCircle" size={52} /></span>
+        <h3 class="font-serif-display text-3xl text-[#0F304E] mt-4">Thank you — enquiry received.</h3>
+        <p class="text-[#52667A] mt-2 max-w-md mx-auto text-sm leading-relaxed">Our team will respond within one business day. For urgent marine attendance, call {site.urgentPhone} (24/7).</p>
+        <button class="send-another mt-6 bg-[#0F304E] text-white px-6 py-3 text-sm font-semibold">Send another enquiry</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".enquiry-form").forEach((form) => {
+    const wrap = form.parentElement;
+    const success = wrap?.querySelector(".form-success");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(form as HTMLFormElement);
+      const name = String(fd.get("name") || "").trim();
+      const email = String(fd.get("email") || "").trim();
+      const message = String(fd.get("message") || "").trim();
+      const checks = [
+        { bad: !name, input: form.querySelector('[name="name"]') },
+        { bad: !/^\S+@\S+\.\S+$/.test(email), input: form.querySelector('[name="email"]') },
+        { bad: !message, input: form.querySelector('[name="message"]') },
+      ];
+      let ok = true;
+      checks.forEach(({ bad, input }) => {
+        const err = input?.closest("div")?.querySelector(".err");
+        err?.classList.toggle("hidden", !bad);
+        if (bad) ok = false;
+      });
+      if (ok) { (form as HTMLElement).classList.add("hidden"); success?.classList.remove("hidden"); }
+    });
+    success?.querySelector(".send-another")?.addEventListener("click", () => {
+      (form as HTMLFormElement).reset();
+      (form as HTMLElement).classList.remove("hidden");
+      success.classList.add("hidden");
+    });
+  });
+</script>

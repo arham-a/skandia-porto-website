@@ -1,0 +1,16 @@
+---
+import Icon from "./Icon.astro";
+import type { Service } from "../data/services";
+interface Props { service: Service }
+const { service: s } = Astro.props;
+const iconFor: Record<string, string> = { Anchor: "anchor", Package: "package", Search: "search", FileText: "fileText", Settings: "settings", Share2: "share" };
+---
+<article class="group bg-white border border-[#EEF3F6] hover:border-[#CDE6EE] hover:shadow-[0_14px_36px_rgba(10,35,58,0.12)] transition flex flex-col">
+  <a href={`/services/${s.slug}`} class="block overflow-hidden aspect-[16/10]"><img src={s.image} alt={s.title} class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" /></a>
+  <div class="p-4 flex flex-col flex-1">
+    <span class="text-[#0F304E]"><Icon name={iconFor[s.icon] ?? "anchor"} size={22} strokeWidth={1.6} /></span>
+    <h3 class="font-serif-display text-[15.5px] leading-snug text-[#0F304E] font-semibold mt-3"><a href={`/services/${s.slug}`}>{s.title}</a></h3>
+    <p class="text-[11.5px] leading-relaxed text-[#667D92] mt-2 flex-1">{s.excerpt}</p>
+    <a href={`/services/${s.slug}`} class="inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-[#0F304E] mt-4 hover:text-[#3EA8BE]">Learn More <Icon name="arrowRight" size={12} /></a>
+  </div>
+</article>

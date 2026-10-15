@@ -1,0 +1,61 @@
+---
+import PageHero from "../components/PageHero.astro";
+import UrgentBanner from "../components/UrgentBanner.astro";
+import ContactSection from "../components/ContactSection.astro";
+import Icon from "../components/Icon.astro";
+import { services } from "../data/services";
+const iconFor: Record<string, string> = { Anchor: "anchor", Package: "package", Search: "search", FileText: "fileText", Settings: "settings", Share2: "share" };
+const initialFilter = Astro.url.searchParams.get("category") || "All";
+---
+  <main>
+    <PageHero eyebrow="OUR SERVICES" title="End-to-End Maritime Solutions" text="From commercial opportunities to operational support — chartering, logistics, surveying, claims and consultancy, delivered as one integrated service." image="https://images.pexels.com/photos/29278107/pexels-photo-29278107.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" />
+    <section class="max-w-7xl mx-auto px-6 py-12">
+      <div class="flex flex-wrap gap-2 mb-9" id="service-filters">
+        {["All", "Commercial", "Technical & Claims"].map(c => <button data-filter={c} class={`filter-btn px-5 py-2.5 text-[13px] font-semibold border transition ${initialFilter === c ? "bg-[#0F304E] text-white border-[#0F304E]" : "border-[#D7E3EC] text-[#40596F] hover:border-[#0F304E]"}`}>{c}</button>)}
+        <span class="ml-auto text-sm text-[#71869A] self-center" id="service-count"></span>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="service-grid">
+        {services.map(s => (
+          <article data-category={s.category} class="service-card group border border-[#E6EFF4] bg-white hover:shadow-[0_16px_40px_rgba(10,35,58,0.12)] transition flex flex-col">
+            <a href={`/services/${s.slug}`} class="relative block overflow-hidden aspect-[16/9]"><img src={s.image} alt={s.title} class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" /><span class="absolute top-3 left-3 bg-[#0A233A]/90 text-white text-[10px] font-bold tracking-widest uppercase px-2.5 py-1">{s.category}</span></a>
+            <div class="p-6 flex flex-col flex-1">
+              <div class="flex items-center gap-3"><span class="text-[#3EA8BE]"><Icon name={iconFor[s.icon]} size={22} /></span><h2 class="font-serif-display text-xl font-semibold text-[#0F304E] leading-tight">{s.title}</h2></div>
+              <p class="text-sm text-[#667D92] leading-relaxed mt-3 flex-1">{s.excerpt}</p>
+              <ul class="mt-4 space-y-1.5">{s.features.slice(0, 3).map(f => <li class="text-xs text-[#40596F] flex gap-2"><span class="text-[#3EA8BE]">—</span>{f}</li>)}</ul>
+              <a href={`/services/${s.slug}`} class="inline-flex items-center gap-2 text-[13px] font-bold text-[#0F304E] mt-5 hover:text-[#3EA8BE]">Learn More <Icon name="arrowRight" size={14} /></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+    <UrgentBanner /><ContactSection compact />
+  </main>
+  <script define:vars={{ initialFilter }}>
+    const btns = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".service-card");
+    const count = document.getElementById("service-count");
+    function apply(f, updateHash = false) {
+      let n = 0;
+      cards.forEach(c => { const show = f === "All" || c.dataset.category === f; c.classList.toggle("hidden", !show); if (show) n++; });
+      if (count) count.textContent = `${n} service${n !== 1 ? "s" : ""}`;
+      btns.forEach(b => {
+        const active = b.dataset.filter === f;
+        b.className = `filter-btn px-5 py-2.5 text-[13px] font-semibold border transition ${active ? "bg-[#0F304E] text-white border-[#0F304E]" : "border-[#D7E3EC] text-[#40596F] hover:border-[#0F304E]"}`;
+      });
+      // Only user filter clicks may update the hash — never hijack it on load/other pages.
+      if (updateHash) {
+        const cat = f === "All" ? "" : `?category=${encodeURIComponent(f)}`;
+        history.replaceState(null, "", `#/services${cat}`);
+      }
+    }
+    btns.forEach(b => b.addEventListener("click", () => apply(b.dataset.filter, true)));
+    function fromHash() {
+      const h = window.location.hash.replace(/^#/, "");
+      if (!h.startsWith("/services")) return; // not on the services route — leave the hash alone
+      const q = h.includes("?") ? new URLSearchParams(h.split("?")[1]) : new URLSearchParams();
+      apply(q.get("category") || "All", false);
+    }
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+  </script>
+

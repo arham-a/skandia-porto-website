@@ -1,0 +1,46 @@
+---
+import PageHero from "../components/PageHero.astro";
+import ContactSection from "../components/ContactSection.astro";
+import Icon from "../components/Icon.astro";
+import { claimsServices, surveyProcess } from "../data/network";
+import { site } from "../data/site";
+const independence = ["Accepted by insurers, clubs & courts","Same-day preliminary findings","Full report typically within 48 hours","Expert witness support available"];
+---
+  <main>
+    <PageHero eyebrow="CLAIMS & SURVEYS" title="Independent Surveys. Fair, Well-Documented Claims." text="Professional claims support, loss adjusting and marine surveying for hull, cargo and liability matters — independent, objective and practical when it matters most." image="https://images.pexels.com/photos/15610939/pexels-photo-15610939.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" />
+    <section class="bg-[#3EA8BE]"><div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-white"><p class="text-sm font-semibold flex items-center gap-2"><Icon name="phone" size={16} /> Incident right now? Our duty surveyor is available 24/7 — {site.urgentPhone}</p><a href="/contact?type=urgent" class="bg-[#0A233A] text-white text-xs font-bold px-5 py-2.5 shrink-0">Request Urgent Attendance →</a></div></section>
+
+    <section class="max-w-7xl mx-auto px-6 py-14">
+      <div class="flex flex-col md:flex-row justify-between gap-5 md:items-end">
+        <div><p class="text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">WHAT WE COVER</p><h2 class="font-serif-display text-3xl md:text-4xl text-[#0F304E] mt-2">Claims &amp; Survey Services</h2></div>
+        <p class="text-sm text-[#52667A] max-w-md leading-relaxed">Instructed by insurers, P&amp;I clubs, owners, charterers and cargo interests — our independence is accepted by all parties.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-9">
+        {claimsServices.map((c, i) => <article class="group border border-[#E6EFF4] p-7 hover:border-[#3EA8BE] hover:shadow-lg transition"><p class="font-serif-display text-4xl text-[#D8EDF3] group-hover:text-[#3EA8BE] transition">0{i + 1}</p><h3 class="font-serif-display text-xl font-semibold text-[#0F304E] mt-3">{c.title}</h3><p class="text-[13.5px] text-[#667D92] leading-relaxed mt-2">{c.text}</p></article>)}
+      </div>
+
+      <div class="mt-16">
+        <p class="text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">HOW AN INSTRUCTION WORKS</p>
+        <h2 class="font-serif-display text-3xl text-[#0F304E] mt-2">From Instruction to Report in Four Steps</h2>
+        <div class="grid md:grid-cols-4 gap-5 mt-8">
+          {surveyProcess.map(p => <div class="relative bg-[#F4F8FA] p-6"><p class="font-serif-display text-5xl text-[#3EA8BE]/30">{p.step}</p><h3 class="font-bold text-[#0F304E] mt-2">{p.title}</h3><p class="text-[13px] text-[#667D92] leading-relaxed mt-2">{p.text}</p></div>)}
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-0 mt-16">
+        <div class="bg-[#0A233A] p-8 md:p-12">
+          <h2 class="font-serif-display text-3xl text-white">Why independence matters</h2>
+          <p class="text-[14px] text-[#B9CFDE] leading-relaxed mt-4">Every party to a shipment or casualty has an interest. Independent evidence is the only record all sides — and their insurers — can rely on when accounts diverge. Our reports are factual, photographic and contemporaneous, and our surveyors have no stake in the outcome.</p>
+          <ul class="space-y-3 mt-6 text-sm text-white">{independence.map(t => <li class="flex gap-2.5"><span class="text-[#3EA8BE]"><Icon name="check" size={16} /></span>{t}</li>)}</ul>
+        </div>
+        <img src="https://images.pexels.com/photos/18845296/pexels-photo-18845296.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="w-full h-full min-h-[300px] object-cover" loading="lazy" />
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="/services/maritime-claims-loss-adjusting" class="inline-flex items-center gap-2 bg-[#0F304E] text-white text-sm font-semibold px-7 py-3.5 mr-3 mb-3">Claims &amp; Loss Adjusting <Icon name="arrowRight" size={15} /></a>
+        <a href="/services/marine-cargo-surveying" class="inline-flex items-center gap-2 border border-[#0F304E] text-[#0F304E] text-sm font-semibold px-7 py-3.5 mb-3">Marine &amp; Cargo Surveying <Icon name="arrowRight" size={15} /></a>
+      </div>
+    </section>
+    <ContactSection />
+  </main>
+

@@ -1,0 +1,180 @@
+---
+import Icon from "../components/Icon.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import WorldMap from "../components/WorldMap.astro";
+import UrgentBanner from "../components/UrgentBanner.astro";
+import ContactSection from "../components/ContactSection.astro";
+import { services } from "../data/services";
+import { whyItems, stats, testimonials, clients } from "../data/site";
+import { networkPoints } from "../data/network";
+import { insights } from "../data/insights";
+
+const whyIcon: Record<string, string> = { ShipWheel: "wheel", Shield: "shield", Layers: "layers", Clock: "clock", Globe: "globe" };
+const netIcons = ["handshake", "globe", "pin", "compass"];
+---
+  <main>
+    <!-- HERO — Version 1: exact reference design -->
+    <section class="relative overflow-hidden bg-[#DCE9F0]">
+      <div class="absolute inset-0">
+        <img src="https://images.pexels.com/photos/26224664/pexels-photo-26224664.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1920" alt="Cargo ship at sunset" class="w-full h-full object-cover object-[center_58%]" />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#E9F1F6]/95 via-[#E9F1F6]/55 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent"></div>
+      </div>
+      <div class="relative max-w-7xl mx-auto px-6 pt-12 pb-16 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28">
+        <div class="max-w-[620px]">
+          <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">GLOBAL PERSPECTIVE. PRACTICAL SOLUTIONS.</p>
+          <h1 class="font-serif-display text-[#0B2743] text-[38px] leading-[1.08] sm:text-[48px] lg:text-[56px] font-semibold mt-4">Maritime Expertise.<br/>Commercial Reach.<br/>Practical Solutions.</h1>
+          <p class="text-[14.5px] md:text-[15.5px] leading-relaxed text-[#223E57] mt-5 max-w-[480px]">Skandia Porto ApS provides reliable and independent maritime services to shipowners, charterers, cargo interests, traders, insurers and logistics clients worldwide.</p>
+          <div class="flex flex-wrap gap-3 mt-7">
+            <a href="/contact" class="inline-flex items-center gap-2.5 bg-[#0F304E] text-white text-[13px] font-semibold px-6 py-3.5 hover:bg-[#0A233A] transition shadow-lg shadow-[#0F304E]/20">Discuss a Requirement <Icon name="arrowRight" size={15} /></a>
+            <a href="/services" class="inline-flex items-center gap-2 bg-white/70 backdrop-blur border border-[#0F304E]/70 text-[#0F304E] text-[13px] font-semibold px-6 py-3.5 hover:bg-[#0F304E] hover:text-white transition">Our Services</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="bg-white">
+      <div class="max-w-7xl mx-auto px-6 pt-10 md:pt-14 pb-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-10">
+          <div class="shrink-0">
+            <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">OUR SERVICES</p>
+            <h2 class="font-serif-display text-[28px] md:text-[34px] text-[#0F304E] mt-2 leading-tight">End-to-End Maritime Solutions</h2>
+          </div>
+          <div class="flex items-start gap-4 max-w-md">
+            <span class="hidden md:block h-[2px] w-14 bg-[#3EA8BE] mt-3 shrink-0"></span>
+            <p class="text-[13px] leading-relaxed text-[#52667A]">From commercial opportunities to operational support, we deliver practical and tailored solutions across the maritime sector.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-5 mt-8">
+          {services.map(s => <ServiceCard service={s} />)}
+        </div>
+      </div>
+    </section>
+
+    <!-- SPLIT -->
+    <section class="grid md:grid-cols-2">
+      <div class="relative overflow-hidden bg-[#0A233A] min-h-[280px] flex items-center">
+        <img src="https://images.pexels.com/photos/3856438/pexels-photo-3856438.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="absolute inset-0 w-full h-full object-cover opacity-70" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#071C2F]/60 via-[#0A233A]/70 to-[#0A233A]/90"></div>
+        <div class="relative px-6 py-10 md:py-14 md:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] md:pr-12 max-w-xl ml-auto w-full">
+          <h2 class="font-serif-display text-[26px] md:text-[30px] text-white">Commercial Solutions</h2>
+          <p class="text-[13px] leading-relaxed text-[#C7DCE8] mt-3">We support our clients with chartering, shipbroking and freight forwarding solutions, combining market knowledge with a practical approach to deliver value in a dynamic global environment.</p>
+          <a href="/services?category=Commercial" class="inline-flex items-center gap-2 border border-white/70 text-white text-[12px] font-semibold px-5 py-3 mt-6 hover:bg-white hover:text-[#0A233A] transition">Explore Commercial Services <Icon name="arrowRight" size={14} /></a>
+        </div>
+      </div>
+      <div class="relative overflow-hidden bg-[#E6EFF4] min-h-[280px] flex items-center">
+        <img src="https://images.pexels.com/photos/15610950/pexels-photo-15610950.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" class="absolute right-0 top-0 h-full w-[46%] object-cover hidden sm:block" style="mask-image:linear-gradient(to left, black 55%, transparent);-webkit-mask-image:linear-gradient(to left, black 55%, transparent)" loading="lazy" />
+        <div class="relative px-6 py-10 md:py-14 md:pr-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] md:pl-12 max-w-xl w-full">
+          <h2 class="font-serif-display text-[26px] md:text-[30px] text-[#0F304E]">Technical &amp; Claims Support</h2>
+          <p class="text-[13px] leading-relaxed text-[#40596F] mt-3 max-w-[380px]">Our surveying, consultancy and loss adjusting services provide independent, objective and practical support when it matters most.</p>
+          <a href="/claims-surveys" class="inline-flex items-center gap-2 border border-[#0F304E]/70 text-[#0F304E] text-[12px] font-semibold px-5 py-3 mt-6 hover:bg-[#0F304E] hover:text-white transition bg-white/50">Explore Claims &amp; Surveys <Icon name="arrowRight" size={14} /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NETWORK -->
+    <section class="bg-white overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 grid lg:grid-cols-[300px_1fr_240px] gap-8 items-center">
+        <div>
+          <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">OUR NETWORK</p>
+          <h2 class="font-serif-display text-[28px] md:text-[34px] leading-[1.15] text-[#0F304E] mt-3">A Global Network<br/>of Trusted Partners</h2>
+          <p class="text-[13px] leading-relaxed text-[#52667A] mt-4">We work with a well-established network of reliable partners, surveyors and maritime professionals across key regions, enabling us to support our clients wherever their operations lead.</p>
+          <a href="/network" class="inline-flex items-center gap-2 border border-[#0F304E] text-[#0F304E] text-[12px] font-semibold px-5 py-3 mt-6 hover:bg-[#0F304E] hover:text-white transition">Our Network <Icon name="arrowRight" size={14} /></a>
+        </div>
+        <div class="hidden md:block"><WorldMap height="320px" /></div>
+        <ul class="space-y-5">
+          {networkPoints.map((n, i) => (
+            <li class="flex gap-3">
+              <span class="w-9 h-9 rounded-full bg-[#E6EFF4] text-[#3EA8BE] flex items-center justify-center shrink-0"><Icon name={netIcons[i]} size={17} /></span>
+              <span><span class="block text-[12.5px] font-semibold text-[#0F304E] leading-tight">{n.title}</span><span class="block text-[11px] text-[#71869A] mt-1 leading-snug">{n.text}</span></span>
+            </li>
+          ))}
+        </ul>
+        <div class="md:hidden"><WorldMap height="220px" /></div>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section class="bg-white border-t border-[#EEF3F6]">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-14">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-5">
+          <div>
+            <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">WHY SKANDIA PORTO</p>
+            <h2 class="font-serif-display text-[28px] md:text-[34px] text-[#0F304E] mt-2">A Partner You Can Rely On</h2>
+          </div>
+          <div class="flex items-start gap-4 max-w-md"><span class="hidden md:block h-[2px] w-14 bg-[#3EA8BE] mt-3 shrink-0"></span><p class="text-[13px] leading-relaxed text-[#52667A]">We combine maritime expertise with a practical, independent approach to support your commercial and operational objectives.</p></div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-8 mt-10">
+          {whyItems.map(w => (
+            <div class="group">
+              <span class="text-[#0F304E] group-hover:text-[#3EA8BE] transition inline-block"><Icon name={whyIcon[w.icon] ?? "anchor"} size={30} strokeWidth={1.3} /></span>
+              <h3 class="text-[14px] font-bold text-[#0F304E] mt-4">{w.title}</h3>
+              <p class="text-[12px] leading-relaxed text-[#667D92] mt-2">{w.text}</p>
+              <span class="block w-8 h-[2px] bg-[#7FC7D8] mt-4 group-hover:w-14 transition-all"></span>
+            </div>
+          ))}
+        </div>
+        <div class="mt-12 bg-[#0F304E] grid grid-cols-2 lg:grid-cols-4">
+          {stats.map(s => <div class="px-6 py-7 text-center border-r border-white/10 last:border-0"><p class="font-serif-display text-3xl text-white">{s.value}</p><p class="text-[11px] tracking-wide text-[#9FC6D6] mt-1">{s.label}</p></div>)}
+        </div>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-6 justify-center">
+          <span class="text-[10px] tracking-[0.2em] font-bold text-[#71869A] mr-2">TRUSTED BY</span>
+          {clients.map(c => <span class="text-[12px] font-semibold text-[#40596F] border border-[#DCE9F0] px-3 py-1.5 bg-[#F7FAFC]">{c}</span>)}
+        </div>
+      </div>
+    </section>
+
+    <UrgentBanner />
+
+    <!-- TESTIMONIALS + INSIGHTS -->
+    <section class="bg-[#F4F8FA]">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 grid lg:grid-cols-2 gap-12">
+        <div>
+          <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">CLIENT PERSPECTIVES</p>
+          <div class="mt-5 min-h-[150px]" id="testimonial-box">
+            {testimonials.map((t, i) => (
+              <figure class={`testimonial ${i === 0 ? "" : "hidden"}`}>
+                <blockquote class="font-serif-display text-[20px] md:text-[23px] leading-relaxed text-[#0F304E] italic">“{t.quote}”</blockquote>
+                <figcaption class="mt-5"><span class="block text-sm font-bold text-[#0F304E]">{t.name}</span><span class="block text-xs text-[#71869A]">{t.role}</span></figcaption>
+              </figure>
+            ))}
+          </div>
+          <div class="flex gap-2 mt-6">
+            {testimonials.map((_, i) => <button data-t={i} aria-label={`Testimonial ${i + 1}`} class={`t-dot h-2 transition-all ${i === 0 ? "w-9 bg-[#3EA8BE]" : "w-2 bg-[#B9CFDE]"}`}></button>)}
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center">
+            <p class="text-[10.5px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#71869A]">LATEST INSIGHTS</p>
+            <a href="/insights" class="text-xs font-bold text-[#0F304E] inline-flex gap-1 items-center hover:text-[#3EA8BE]">All Insights <Icon name="arrowRight" size={13} /></a>
+          </div>
+          <div class="divide-y divide-[#DCE9F0] mt-4">
+            {insights.slice(0, 3).map(a => (
+              <a href={`/insights/${a.slug}`} class="flex gap-4 py-4 group">
+                <img src={a.image} alt="" class="w-24 h-[68px] object-cover shrink-0" loading="lazy" />
+                <span><span class="text-[10px] font-bold tracking-widest text-[#3EA8BE] uppercase">{a.category} · {a.date}</span><span class="block font-serif-display font-semibold text-[#0F304E] leading-snug mt-1 group-hover:text-[#1C4A73]">{a.title}</span></span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <ContactSection />
+  </main>
+
+  <script>
+    const figures = document.querySelectorAll(".testimonial");
+    const dots = document.querySelectorAll(".t-dot");
+    let current = 0;
+    let timer: ReturnType<typeof setInterval>;
+    function show(n: number) {
+      current = n;
+      figures.forEach((f, i) => f.classList.toggle("hidden", i !== n));
+      dots.forEach((d, i) => { d.className = `t-dot h-2 transition-all ${i === n ? "w-9 bg-[#3EA8BE]" : "w-2 bg-[#B9CFDE]"}`; });
+    }
+    function auto() { timer = setInterval(() => show((current + 1) % figures.length), 6000); }
+    dots.forEach((d, i) => d.addEventListener("click", () => { clearInterval(timer); show(i); auto(); }));
+    if (figures.length) auto();
+  </script>
